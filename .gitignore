@@ -1,0 +1,7 @@
+*.pyc
+__pycache__/
+*.pc
+
+TODO.md
+Todo.md
+todo.md
