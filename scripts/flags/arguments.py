@@ -7,12 +7,21 @@ class Arguments:
                 prog="lockup",
         )
 
-    def arguments(self):
+    def arguments(self) -> None:
         self.parser.add_argument(
                 "-p", "--path",
                 help="path for the file/folder", 
                 metavar="", 
-                required=True,
+        )
+        self.parser.add_argument(
+                "-enc", "--encrypt",
+                help="encrypt the given data if used", 
+                action="store_true",
+        )
+        self.parser.add_argument(
+                "-dec", "--decrypt",
+                help="decrypt the given data using a key", 
+                action="store_true",
         )
 
     def get(self):
