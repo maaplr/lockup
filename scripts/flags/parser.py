@@ -16,3 +16,8 @@ class Parser:
     @property
     def decrypt(self):
         return self.args.decrypt
+
+    @property
+    def output(self):
+        return self.args.output
+

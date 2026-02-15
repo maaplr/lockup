@@ -23,6 +23,11 @@ class Arguments:
                 help="decrypt the given data using a key", 
                 action="store_true",
         )
+        self.parser.add_argument(
+                "-o", "--output",
+                help="path for the file/folder", 
+                metavar="", 
+        )
 
     def get(self):
         self.arguments()
