@@ -9,8 +9,11 @@ class Crypt:
     def get_key(self, type=None):
         return self.key if type == "encode" else self.key.decode()
 
-    def encrypt(self, data):
-        return self.token.encrypt(data.encode())
+    def encrypt(self, token):
+        return self.token.encrypt(token.encode())
 
-    def decrypt(self, token, key):
-        return Fernet(key).decrypt(token).decode()
+    def decrypt(self, token):
+        return self.token.decrypt(token).decode()
+
+    def generate_key(self):
+        return Fernet.generate_key()
