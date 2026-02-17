@@ -6,16 +6,16 @@ class Parser:
         self.args = Arguments().get()
 
     @property
-    def input(self):
-        return self.args.input
+    def path(self):
+        return self.args.path
 
     @property
     def key(self):
         return self.args.key
 
     @property
-    def output(self):
-        return self.args.output
+    def save(self):
+        return self.args.save
 
     @property
     def encrypt(self):

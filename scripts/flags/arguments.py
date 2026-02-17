@@ -7,11 +7,11 @@ class Arguments:
                 prog="lockup",
         )
         self.io = self.parser.add_argument_group("input/output")
-        self.mode = self.parser.add_argument_group("Mode")
+        self.mode = self.parser.add_argument_group("Modes")
 
     def arguments(self) -> None:
         self.io.add_argument(
-                "-i", "--input",
+                "-p", "--path",
                 help="path for the file/folder", 
                 metavar="", 
         )
@@ -21,8 +21,8 @@ class Arguments:
                 metavar="", 
         )
         self.io.add_argument(
-                "-o", "--output",
-                help="path for the file/folder", 
+                "-as", "--save",
+                help="where to save file/folder", 
                 metavar="", 
         )
         self.mode.add_argument(
@@ -36,7 +36,7 @@ class Arguments:
                 action="store_true",
         )
         self.mode.add_argument(
-                "-gen", "--generate_key",
+                "-gen", "--generate-key",
                 help="generates a 32 url-safe base64-encoded bytes key",
                 action="store_true",
         )

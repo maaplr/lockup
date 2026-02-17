@@ -1,19 +1,16 @@
 from cryptography.fernet import Fernet
 
-
 class Crypt:
     def __init__(self, key=None) -> None:
-        self.key = key.encode() if key else Fernet.generate_key()
+        self.generate_key = Fernet.generate_key()
+        self.key = key.encode() if key else self.generate_key
         self.token = Fernet(self.key)
+
+    def encrypt(self, data):
+        return self.token.encrypt(data.encode())
+
+    def decrypt(self, data):
+        return self.token.decrypt(data).decode()
 
     def get_key(self, type=None):
         return self.key if type == "encode" else self.key.decode()
-
-    def encrypt(self, token):
-        return self.token.encrypt(token.encode())
-
-    def decrypt(self, token):
-        return self.token.decrypt(token).decode()
-
-    def generate_key(self):
-        return Fernet.generate_key()
