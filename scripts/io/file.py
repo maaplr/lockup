@@ -1,11 +1,15 @@
 import os
 
 class File:
-    def read(self, path):
-        if os.path.isfile(path):
-            file = open(path)
-            return file.read().strip()
+    def __init__(self, input_path, output_path):
+        self.input_path = input_path
+        self.output_path = output_path
 
-    def write(self, path, content="This is the default message"):
-        with open(path, "w") as file:
+    def read(self):
+        if os.path.isfile(self.input_path):
+            file = open(self.input_path)
+            return file.read()
+
+    def save(self, content):
+        with open(self.output_path, "w") as file:
             file.write(content)

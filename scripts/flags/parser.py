@@ -1,9 +1,8 @@
 from .arguments import Arguments
 
-
 class Parser:
-    def __init__(self):
-        self.args = Arguments().get()
+    def __init__(self, name):
+        self.args = Arguments(name).get()
 
     @property
     def path(self):
@@ -28,4 +27,7 @@ class Parser:
     @property
     def generate_key(self):
         return self.args.generate_key
-        
+
+    @property
+    def auto_save(self):
+        return self.args.auto_save
