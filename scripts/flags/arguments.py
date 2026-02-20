@@ -26,22 +26,22 @@ class Arguments:
                 metavar="", 
         )
         self.io.add_argument(
-                "-as", "--auto-save",
+                "-auto", "--auto-save",
                 help="after running if included will save the data to the .lockup file",
                 action="store_true",
         )
         self.mode.add_argument(
-                "-e", "--encrypt",
+                "-enc", "--encrypt",
                 help="encrypt the given data if used", 
                 action="store_true",
         )
         self.mode.add_argument(
-                "-d", "--decrypt",
+                "-dec", "--decrypt",
                 help="decrypt the given data using a key", 
                 action="store_true",
         )
         self.mode.add_argument(
-                "-g", "--generate-key",
+                "-gen", "--generate-key",
                 help="generates a 32 url-safe base64-encoded bytes key",
                 action="store_true",
         )
