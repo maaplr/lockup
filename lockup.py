@@ -2,78 +2,31 @@ from scripts.flags.parser import Parser
 from scripts.io.file  import File
 from scripts.io.crypt import Crypt
 
-from pathlib import Path
-
-import datetime
-import random
-import os
-
 class Core:
     def __init__(self):
-        self.parser = Parser(
-            "lockup",
-        )
-        self.file   = File(
-            self.parser.path or None,
-            self.parser.save or None
-        )
-        self.crypt  = Crypt(
-            self.parser.key or None,
-        )
+        self.key = None
+        self.file_data = None
 
-        # -p
-        if self.parser.path:
-            self.read_file = self.file.read()
+        self.parser = Parser("lockup")
+        self.file   = File(self.parser.input, self.parser.output)
+        self.crypt  = Crypt(self.key)
 
-        self.date = datetime.datetime.now()
-        self.id = random.randint(99999,999999)
+    def read_file_data(self):
+        self.file_data = self.file.read()
 
-    def enc(self):
-        # -enc |  encrypt data using a key
-        if self.parser.encrypt:
-            self.token = self.crypt.encrypt(self.read_file).decode()
-            # manual saving both for keys and file
-            # -s
-            if self.parser.save:
-                self.file.save(self.token)
-                self.showing()
+    def save_file(self):
+        self.file.save(self.token)
 
-            # -auto | auto saving 
-            if self.parser.auto_save:
-                self.base_path = f"{Path.home()}/.lockup"
-                if not os.path.exists(self.base_path):
-                    os.mkdir(self.base_path)
+    def set_key(self):
+        self.key = self.parser.key
 
-                if not os.path.exists(f"{self.base_path}/store"):
-                    os.mkdir(f"{self.base_path}/store")
+    def save_file_auto(self):
+        self.file.auto_save(data=self.token, key=self.crypt.key)
 
-                # keys
-                keys_file = open(f"{self.base_path}/keys.txt", "a")
-                keys_file.write(f"{self.date.strftime("%Y_%m_%d")}::{self.date.strftime("%H_%M_%S")}::{self.id}::{self.crypt.key.decode()}\n")
-
-                data_file = open(f"{self.base_path}/store/{self.id}.txt", "w")
-                data_file.write(self.token)
-                self.showing()
-
-    def dec(self):
-        # -dec | decrypt data using a key as input
-        if self.parser.decrypt:
-            self.token = self.crypt.decrypt(self.read_file) 
-
-            # -s
-            if self.parser.save:
-                self.file.save(self.token)
-                self.showing()
-
-    def gen(self):
-        # -gen | generate random key and prints it
-        if self.parser.generate_key:
-            print(f"Key: {self.crypt.generate_key.decode()}")
-        
-    def showing(self):
+    def verbose(self):
         Mode = "Encryption" if self.parser.encrypt else "Decryption"
-        From = self.parser.path
-        To = self.parser.save if not self.parser.auto_save else ".lockup"
+        From = self.parser.input
+        To = self.parser.output if not (self.parser.auto and self.parser.output) else ".lockup"
         Key = self.crypt.key 
 
         print(f"Mode : {Mode}")
@@ -81,11 +34,48 @@ class Core:
         print(f"To   : {To}")
         print(f"Key  : {Key.decode()}")
 
+    def enc(self):
+        self.token = self.crypt.encrypt(self.file_data).decode()
+
+    def dec(self):
+        self.token = self.crypt.decrypt(self.file_data) 
+
+    def gen(self):
+        print(f"Key: {self.crypt.generate_key.decode()}")
+        
+
     def run(self):
-        # Modes
-        self.enc()
-        self.dec()
-        self.gen()
+        # -i
+        if self.parser.input:
+            self.read_file_data()
+
+        # -o
+        if self.parser.output:
+            self.save_file()
+
+        # -k
+        if self.parser.key:
+            self.set_key()
+
+        # -a
+        if self.parser.auto:
+            self.save_file_auto()
+
+        # -v
+        if self.parser.verbose:
+            self.verbose()
+
+        # -e
+        if self.parser.encrypt:
+            self.enc()
+
+        # -d
+        if self.parser.decrypt:
+            self.dec()
+
+        # -g
+        if self.parser.generate_key:
+            self.gen()
 
 
 if __name__ == "__main__":

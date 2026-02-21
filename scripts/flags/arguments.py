@@ -11,13 +11,13 @@ class Arguments:
 
     def arguments(self):
         self.io.add_argument(
-                "-p", "--path",
-                help="path for the file/folder", 
+                "-i", "--input",
+                help="input file path", 
                 metavar="", 
         )
         self.io.add_argument(
-                "-s", "--save",
-                help="where to save file/folder", 
+                "-o", "--output",
+                help="output file path", 
                 metavar="", 
         )
         self.io.add_argument(
@@ -26,23 +26,29 @@ class Arguments:
                 metavar="", 
         )
         self.io.add_argument(
-                "-auto", "--auto-save",
-                help="after running if included will save the data to the .lockup file",
+                "-a", "--auto",
+                help="auto-save key and data to .lockup",
+                action="store_true",
+        )
+        self.io.add_argument(
+                "-v", "--verbose",
+                help="show detailed information about the operation", 
+                action="store_true",
+        )
+
+        self.mode.add_argument(
+                "-e", "--encrypt",
+                help="encrypt the given data", 
                 action="store_true",
         )
         self.mode.add_argument(
-                "-enc", "--encrypt",
-                help="encrypt the given data if used", 
-                action="store_true",
-        )
-        self.mode.add_argument(
-                "-dec", "--decrypt",
+                "-d", "--decrypt",
                 help="decrypt the given data using a key", 
                 action="store_true",
         )
         self.mode.add_argument(
-                "-gen", "--generate-key",
-                help="generates a 32 url-safe base64-encoded bytes key",
+                "-g", "--generate-key",
+                help="generate a new decoded 32-byte encryption key (base64-url-safe format)",
                 action="store_true",
         )
 

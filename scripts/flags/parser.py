@@ -5,29 +5,26 @@ class Parser:
         self.args = Arguments(name).get()
 
     @property
-    def path(self):
-        return self.args.path
+    def input(self):return self.args.input
 
     @property
-    def key(self):
-        return self.args.key
+    def output(self):return self.args.output
 
     @property
-    def save(self):
-        return self.args.save
+    def key(self):return self.args.key
 
     @property
-    def encrypt(self):
-        return self.args.encrypt
+    def auto(self):return self.args.auto
+
+    @property
+    def verbose(self):return self.args.verbose
+
+    @property
+    def encrypt(self):return self.args.encrypt
     
     @property
-    def decrypt(self):
-        return self.args.decrypt
+    def decrypt(self):return self.args.decrypt
 
     @property
-    def generate_key(self):
-        return self.args.generate_key
+    def generate_key(self):return self.args.generate_key
 
-    @property
-    def auto_save(self):
-        return self.args.auto_save
