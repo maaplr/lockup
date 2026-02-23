@@ -5,7 +5,7 @@ class Parser:
         self.args = Arguments(name).get()
 
     @property
-    def input(self):return self.args.input
+    def path(self):return self.args.path
 
     @property
     def output(self):return self.args.output

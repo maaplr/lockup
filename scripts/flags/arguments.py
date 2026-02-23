@@ -10,10 +10,9 @@ class Arguments:
         self.mode = self.parser.add_argument_group("Modes")
 
     def arguments(self):
-        self.io.add_argument(
-                "-i", "--input",
-                help="input file path", 
-                metavar="", 
+        self.parser.add_argument(
+                "path",
+                help="path for the file", 
         )
         self.io.add_argument(
                 "-o", "--output",
