@@ -10,19 +10,21 @@ class File:
         self.base_path = base_path
         self.date = datetime.datetime.now()
         self.ids = [] # only available when gen_id() func is called
+
+    def listdir(self, path=None):
+        # load up all of the ids 
+        path = path if path != None else self.base_path
+        for name in os.listdir(path):
+            if "_" in name:
+                self.ids.append(name[:name.index("_")])
     
     def gen_id(self):
         # this function generate a random number for the name and id of the file 
         # and then it will check if it is not already choosen then it would return 
         # if it is it would return None
-        self.id = int(random.random() * 100000)
-
-        # load up all of the ids 
-        for name in os.listdir(self.base_path):
-            if "_" in name:
-                self.ids.append(name[:name.index("_")])
-
-        return self.id if self.id not in self.ids else None
+        id = int(random.random() * 100000)
+        self.listdir()
+        return id if id not in self.ids else None
 
     def read(self):
         if os.path.isfile(self.input_path):
@@ -33,7 +35,7 @@ class File:
         with open(self.output_path, "w") as file:
             file.write(content)
 
-    def auto_save(self, data, key, type="enc", ):
+    def auto_save(self, path, data, key.decode(), type="enc", ):
         # create a .lockup file in the home direcroty 
         # create a store and key.txt inside of it 
         # store data using the generated id by gen_id()
@@ -52,12 +54,27 @@ class File:
                 keys_file.write(f"date::time::id::key\n")
 
         if type == "enc":
+            id = self.gen_id()
+            date = self.date.strftime("%Y_%m_%d")
+            time = self.date.strftime("%H_%M_%S")
             with open(f"{self.base_path}/keys.txt", "a") as keys_file:
-                keys_file.write(f"{self.date.strftime("%Y_%m_%d")}::{self.date.strftime("%H_%M_%S")}::{self.gen_id()}::{key.decode()}\n")
+                keys_file.write(f"{date}::{time}::{id}::{key}\n")
 
-            with open(f"{self.base_path}/store/{self.gen_id()}_enc.txt", "w") as cipher_file:
+            with open(f"{self.base_path}/store/{id}_enc.txt", "w") as cipher_file:
                 cipher_file.write(data)
         
         if type == "dec":
-            with open(f"{self.base_path}/store/{self.gen_id()}_dec.txt", "w") as data_file:
-                data_file.write(data)
+            if os.path.exists(path):
+                pass
+
+    def verbose(self, parser, crypt):
+        # bug for gen key mode it should return nothing
+        Mode = "Encryption" if parser.encrypt else "Decryption"
+        From = parser.path
+        To  = parser.output if not (parser.auto and parser.output) else ".lockup"
+        Key = crypt.key 
+
+        print(f"Mode : {Mode}")
+        print(f"From : {From}")
+        print(f"To   : {To}")
+        print(f"Key  : {Key.decode()}")
